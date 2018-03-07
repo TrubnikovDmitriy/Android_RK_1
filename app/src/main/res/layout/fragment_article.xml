@@ -4,16 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="8dp"
-    android:paddingTop="8dp">
+    android:paddingBottom="@dimen/padding_out"
+    android:paddingTop="@dimen/padding_out">
 
     <TextView
         android:id="@+id/title"
         style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingEnd="16dp"
-        android:paddingStart="16dp"
+        android:paddingEnd="@dimen/padding"
+        android:paddingStart="@dimen/padding"
         tools:text="Article Title" />
 
     <TextView
@@ -21,8 +21,8 @@
         style="@style/TextAppearance.AppCompat.Small"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingEnd="16dp"
-        android:paddingStart="16dp"
+        android:paddingEnd="@dimen/padding"
+        android:paddingStart="@dimen/padding"
         tools:text="01.01.1970" />
 
     <ScrollView
@@ -32,9 +32,9 @@
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingEnd="16dp"
-            android:textSize="50sp"
-            android:paddingStart="16dp"/>
+            android:paddingEnd="@dimen/padding"
+            android:paddingStart="@dimen/padding"
+            android:textSize="@dimen/content_size"/>
     </ScrollView>
 
 </LinearLayout>
