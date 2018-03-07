@@ -15,9 +15,7 @@ import ru.mail.park.articlelistlib.OnArticleClickListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String CONTENT = "content";
-    public static final String DATE = "date";
-    public static final String TITLE = "title";
+    public static final String ARTICLE = "article";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +25,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createList() {
+
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
+        manager.popBackStack();
 
         final ArticleListFragment articleList = new ArticleListFragment();
         articleList.setOnArticleClickListener(new OnArticleListener());
@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             transaction.replace(R.id.container, articleList);
         }
-
 
         transaction.commit();
     }
@@ -53,9 +52,7 @@ public class MainActivity extends AppCompatActivity {
             ArticleFragment articleFragment = new ArticleFragment();
 
             final Bundle bundle = new Bundle();
-            bundle.putString(TITLE, article.getTitle());
-            bundle.putString(DATE, article.getDate().toString());
-            bundle.putString(CONTENT, article.getContent());
+            bundle.putSerializable(ARTICLE, article);
             articleFragment.setArguments(bundle);
 
             if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
