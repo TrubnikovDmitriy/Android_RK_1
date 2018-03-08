@@ -1,6 +1,7 @@
 package com.example.dmitriy.rk_1_android;
 
 import android.content.res.Configuration;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +20,31 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         createList();
+        if (savedInstanceState != null) {
+            openArticle((Article) savedInstanceState.getSerializable(ARTICLE));
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        final FragmentManager manager = getSupportFragmentManager();
+        ArticleFragment articleFragment = null;
+
+        if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE) {
+            articleFragment = (ArticleFragment) manager.findFragmentById(R.id.container_right);
+        } else {
+            final Fragment fragment = manager.findFragmentById(R.id.container);
+            if (fragment instanceof ArticleFragment) {
+                articleFragment = (ArticleFragment) fragment;
+            }
+        }
+        if (articleFragment != null) {
+            outState.putSerializable(ARTICLE, articleFragment.getArticle());
+        }
     }
 
     private void createList() {
@@ -29,7 +54,12 @@ public class MainActivity extends AppCompatActivity {
         manager.popBackStack();
 
         final ArticleListFragment articleList = new ArticleListFragment();
-        articleList.setOnArticleClickListener(new OnArticleListener());
+        articleList.setOnArticleClickListener(new OnArticleClickListener() {
+            @Override
+            public void onArticleClick(Article article) {
+                openArticle(article);
+            }
+        });
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             transaction.replace(R.id.container_left, articleList);
@@ -40,26 +70,22 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
+    private void openArticle(Article article) {
 
-    private class OnArticleListener implements OnArticleClickListener {
-        @Override
-        public void onArticleClick(Article article) {
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        ArticleFragment articleFragment = new ArticleFragment();
 
-            FragmentManager manager = getSupportFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            ArticleFragment articleFragment = new ArticleFragment();
+        final Bundle bundle = new Bundle();
+        bundle.putSerializable(ARTICLE, article);
+        articleFragment.setArguments(bundle);
 
-            final Bundle bundle = new Bundle();
-            bundle.putSerializable(ARTICLE, article);
-            articleFragment.setArguments(bundle);
-
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                transaction.replace(R.id.container_right, articleFragment);
-            } else {
-                transaction.replace(R.id.container, articleFragment);
-                transaction.addToBackStack(null);
-            }
-            transaction.commit();
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            transaction.replace(R.id.container_right, articleFragment);
+        } else {
+            transaction.replace(R.id.container, articleFragment);
+            transaction.addToBackStack(null);
         }
+        transaction.commit();
     }
 }

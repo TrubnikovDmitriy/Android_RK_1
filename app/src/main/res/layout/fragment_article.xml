@@ -14,6 +14,8 @@
         android:layout_height="wrap_content"
         android:paddingEnd="@dimen/padding"
         android:paddingStart="@dimen/padding"
+        android:textSize="@dimen/title_size"
+        android:textStyle="bold"
         tools:text="Article Title" />
 
     <TextView

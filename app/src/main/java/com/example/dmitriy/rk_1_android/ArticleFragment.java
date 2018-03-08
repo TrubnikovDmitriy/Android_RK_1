@@ -16,12 +16,15 @@ public class ArticleFragment extends Fragment {
 
     public ArticleFragment() { }
 
+    private Article article;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        
         // Inflate the layout for this fragment
         final LinearLayout view = (LinearLayout) inflater.inflate(R.layout.fragment_article, container, false);
-        final Article article = (Article) getArguments().getSerializable(MainActivity.ARTICLE);
+        article = (Article) getArguments().getSerializable(MainActivity.ARTICLE);
 
         TextView titleView = view.findViewById(R.id.title);
         TextView dateView = view.findViewById(R.id.date);
@@ -35,5 +38,9 @@ public class ArticleFragment extends Fragment {
         contentView.setText(article.getContent());
 
         return view;
+    }
+
+    public Article getArticle() {
+        return article;
     }
 }
