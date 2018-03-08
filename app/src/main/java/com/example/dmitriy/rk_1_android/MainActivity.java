@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         createList();
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null && savedInstanceState.getSerializable(ARTICLE) != null) {
             openArticle((Article) savedInstanceState.getSerializable(ARTICLE));
         }
     }
